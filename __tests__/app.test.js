@@ -14,7 +14,18 @@ describe('backend routes', () => {
   })
 
   it('creates a character', async() => {
+    const testChar = {
+      "name": "TestName",
+      "birthday": "Test 66",
+      "address": "666 Satan Road",
+      "elligible": "true",
+      "img": "https://blessthismess.com/img/666777888999.png"
+    }
+
     const res = await request(app)
-      .post('/characters')
+      .post('/api/v1/characters')
+      .send(testChar)
+
+      expect(res.body).toEqual({...testChar, id: '1'})
   })
 });
