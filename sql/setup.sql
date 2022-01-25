@@ -5,5 +5,6 @@ CREATE TABLE characters (
   name TEXT NOT NULL, 
   birthday TEXT NOT NULL,
   address TEXT NOT NULL,
-  elligible TEXT NOT NULL
+  elligible TEXT NOT NULL,
+  img TEXT NOT NULL
 );
