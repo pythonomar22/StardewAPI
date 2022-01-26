@@ -37,9 +37,13 @@ describe('backend routes', () => {
     "img": "https://darklord.com/img/333.png"
   }
 
-  const testArr = [{...testChar1, id: '1'}, {...testChar2, id: '2'}, {...testChar3, id: '3'}]
+  const testArr = [
+    {...testChar1, id: '1'},
+    {...testChar2, id: '2'},
+    {...testChar3, id: '3'}
+  ]
 
-  it('creates a character', async() => {
+  it('should create a character', async() => {
     const res = await request(app)
       .post('/api/v1/characters')
       .send(testChar1)
@@ -49,7 +53,7 @@ describe('backend routes', () => {
       await Character.deleteById(res.body.id)
   })
 
-  it('gets one character by ID', async() => {
+  it('should get one character by ID', async() => {
     const char = await Character.insert(testChar1)
 
     const res = await request(app)
@@ -60,22 +64,51 @@ describe('backend routes', () => {
     await Character.deleteById(char.id)
   })
 
-  it('gets all characters', async() => {
-    await Character.insert(testChar1)
-    await Character.insert(testChar2)
-    await Character.insert(testChar3)
+  it('should get all characters', async() => {
+    const char1 = await Character.insert(testChar1)
+    const char2 = await Character.insert(testChar2)
+    const char3 = await Character.insert(testChar3)
 
     const res = await request(app)
     .get(`/api/v1/characters`)
 
     expect(res.body).toEqual(testArr)
+
+    await Character.deleteById(char1.id)
+    await Character.deleteById(char2.id)
+    await Character.deleteById(char3.id)
   })
 
-  // it.only('updates a character', async() => {
-  //   const char = await Character.insert(testChar1)
-  //   const res = await request(app)
-  //   .patch(`/api/v1/characters/${char.id}`)
+  it('should update a character', async() => {
+    const char = await Character.insert(testChar3)
+    const res = await request(app)
+    .patch(`/api/v1/characters/${char.id}`)
+    .send({
+      "name": "Assistant to the Regional Dark Lord's Assistant",
+      "birthday": "Fall 8",
+      "address": "at his side",
+      "elligible": "true",
+      "img": "https://darklord.com/img/333.png"
+    })
 
-  //   expect(res.body).toEqual([{...testChar1, id: '1'}, {...testChar2, id: '2'}, {...testChar3, id: '3'}])
-  // })
+    const expected = {
+      id: expect.any(String),
+      name: "Assistant to the Regional Dark Lord's Assistant",
+      birthday: "Fall 8",
+      address: "at his side",
+      elligible: "true",
+      img: "https://darklord.com/img/333.png"
+    }
+
+    expect(res.body).toEqual(expected)
+    expect(await Character.getById(char.id)).toEqual(expected)
+  })
+
+  it('should delete a character', async() => {
+    const char = await Character.insert(testChar2)
+
+    const res = await request(app).delete(`/api/v1/characters/${char.id}`)
+
+    expect(res.body).toEqual(char)
+  })
 });
