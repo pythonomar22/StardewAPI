@@ -127,6 +127,9 @@ describe('backend routes', () => {
       img: "https://darklord.com/img/777.png",
       best_gifts: "{'Ice Cream'}, {'Strawberry'}"
     })
+
+    console.log(char)
+
     const res = await request(app)
     .patch(`/api/v1/characters/${char.id}`)
     .send({
@@ -135,7 +138,7 @@ describe('backend routes', () => {
       address: "555 Light Ln.",
       elligible: "false",
       img: "https://darklord.com/img/777.png",
-      best_gifts: "{'Potato'}, {'Strawberry'}"
+      best_gifts: "{'Potato'}"
     })
 
     const expected = {
@@ -145,7 +148,7 @@ describe('backend routes', () => {
       address: "555 Light Ln.",
       elligible: "false",
       img: "https://darklord.com/img/777.png",
-      best_gifts: ["{'Potato'}, {'Strawberry'}"]
+      best_gifts: ["{'Potato'}"]
     }
 
     expect(res.body).toEqual(expected)
