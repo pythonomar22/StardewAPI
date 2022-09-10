@@ -17,5 +17,10 @@ A RESTful API for Stardew Valley information.
 - /api/v1/weapons
 - /api/v1/weapons/:id
 
+# OMAR 
+
+This is actually so cool
+
+PostgreSQL backend
 
 
